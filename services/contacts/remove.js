@@ -1,22 +1,14 @@
-const fs = require('fs/promises');
-
-const listContacts = require('../../models/contacts');
-const contactsPath = require('../../models/filePath');
+const {Contact} = require('../../models');
 
 const removeContact = async (id) => {
   try {
-    const contacts = await listContacts();
+    const data = await Contact.findByIdAndRemove(id);
 
-    const idx = contacts.findIndex((contact) => contact.id === id);
-
-    if (idx === -1) {
+    if (!data) {
       return null;
     }
 
-    const removeContact = contacts.splice(idx, 1);
-
-    await fs.writeFile(contactsPath, JSON.stringify(contacts));
-    return removeContact;
+    return data;
   } catch (error) {
     console.log(error);
   }
