@@ -3,6 +3,7 @@ const getById = require('./getById');
 const post = require('./post');
 const update = require('./update');
 const deleted = require('./delete');
+const updateFavorite = require('./patch');
 
 module.exports = {
   getAll,
@@ -10,4 +11,5 @@ module.exports = {
   update,
   post,
   deleted,
+  updateFavorite,
 };
