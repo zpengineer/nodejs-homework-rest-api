@@ -1,10 +1,10 @@
 const {contacts: services} = require('../../services');
 
 const updateFavorite = async (req, res, next) => {
-  const {contactId} = req.params;
+  const {contactId: id} = req.params;
   const {favorite} = req.body;
 
-  const result = await services.updateFavorite(contactId, {favorite});
+  const result = await services.updateFavorite({id, favorite});
 
   if (!result) {
     return res.status(400).json({

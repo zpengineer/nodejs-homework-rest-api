@@ -1,9 +1,9 @@
 const {contacts: services} = require('../../services');
 
 const getById = async (req, res, next) => {
-  const {contactId} = req.params;
+  const {contactId: id} = req.params;
 
-  const result = await services.getById(contactId);
+  const result = await services.getById({id});
 
   if (!result) {
     return res.status(404).json({

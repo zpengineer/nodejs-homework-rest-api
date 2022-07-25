@@ -1,7 +1,9 @@
 const {contacts: services} = require('../../services');
 
 const postContact = async (req, res, next) => {
-  const result = await services.add(req.body);
+  const {_id: id} = req.user;
+  const body = req.body;
+  const result = await services.add({id, body});
 
   res.status(201).json({
     data: result,

@@ -1,17 +1,15 @@
 const {Contact} = require('../../models');
+const {tryCatchWrapper} = require('../../middlewares');
 
-const updateFavorite = async (id, body) => {
-  try {
-    const data = await Contact.findByIdAndUpdate(id, body, {new: true});
+const updateFavorite = tryCatchWrapper(async ({id, favorite}) => {
+  const data = await Contact
+      .findByIdAndUpdate(id, favorite, {new: true});
 
-    if (!data) {
-      return null;
-    }
-
-    return data;
-  } catch (error) {
-    console.log(error);
+  if (!data) {
+    return null;
   }
-};
+
+  return data;
+});
 
 module.exports = updateFavorite;

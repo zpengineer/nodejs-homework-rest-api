@@ -1,17 +1,14 @@
 const {Contact} = require('../../models');
+const {tryCatchWrapper} = require('../../middlewares');
 
-const removeContact = async (id) => {
-  try {
-    const data = await Contact.findByIdAndRemove(id);
+const removeContact = tryCatchWrapper(async ({id}) => {
+  const data = await Contact.findByIdAndRemove(id);
 
-    if (!data) {
-      return null;
-    }
-
-    return data;
-  } catch (error) {
-    console.log(error);
+  if (!data) {
+    return null;
   }
-};
+
+  return data;
+});
 
 module.exports = removeContact;

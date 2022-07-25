@@ -1,9 +1,10 @@
 const {contacts: services} = require('../../services');
 
 const putContact = async (req, res, next) => {
-  const {contactId} = req.params;
+  const {contactId: id} = req.params;
+  const body = req.body;
 
-  const result = await services.update(contactId, req.body);
+  const result = await services.update({id, body});
 
   if (!result) {
     return res.status(404).json({
