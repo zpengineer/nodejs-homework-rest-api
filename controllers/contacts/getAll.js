@@ -1,7 +1,10 @@
 const {contacts: services} = require('../../services');
 
 const getAll = async (req, res, next) => {
-  const result = await services.getAll();
+  const {_id: id} = req.user;
+  const {page, limit, favorite} = req.query;
+  const skip = (page - 1) * limit;
+  const result = await services.getAll({id, skip, limit, favorite});
 
   res.json({
     status: 'success',

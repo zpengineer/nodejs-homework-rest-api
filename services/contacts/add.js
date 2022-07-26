@@ -1,13 +1,10 @@
 const {Contact} = require('../../models');
+const {tryCatchWrapper} = require('../../middlewares');
 
-const addContact = async (body) => {
-  try {
-    const data = await Contact.create(body);
+const addContact = tryCatchWrapper(async ({id, body}) => {
+  const data = await Contact.create({...body, owner: id});
 
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
+  return data;
+});
 
 module.exports = addContact;
