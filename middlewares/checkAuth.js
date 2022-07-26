@@ -7,24 +7,27 @@ const checkAuth = async (req, res, next) => {
   const {authorization = ''} = req.headers;
   const [bearer, token] = authorization.split(' ');
 
-  try {
-    if (bearer !== 'Bearer') {
-      return res.status(401).json({
-        message: 'Not authorized',
-      });
-    }
-    const {id} = jwt.verify(token, SECRET);
-    const user = await User.findById(id);
+  if (bearer !== 'Bearer') {
+    return res.status(401).json({
+      message: 'Not authorized',
+    });
+  }
 
-    if (!user || !user.token) {
-      return res.status(401).json({
-        message: 'Not authorized',
-      });
+  if (token) {
+    try {
+      const {id} = jwt.verify(token, SECRET);
+      const user = await User.findById(id);
+
+      if (!user || !user.token) {
+        return res.status(401).json({
+          message: 'Not authorized',
+        });
+      }
+      req.user = user;
+      next();
+    } catch (error) {
+      next(error);
     }
-    req.user = user;
-    next();
-  } catch (error) {
-    next(error);
   }
 };
 
