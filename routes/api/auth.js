@@ -9,7 +9,11 @@ const {
   upload,
 } = require('../../middlewares');
 
-const {joiRegisterSchema, joiLoginSchema} = require('../../models/user');
+const {
+  joiRegisterSchema,
+  joiLoginSchema,
+  joiResendEmailSchema,
+} = require('../../models/user');
 
 const {user: ctrl} = require('../../controllers');
 
@@ -28,6 +32,14 @@ router.patch(
     checkAuth,
     upload.single('avatar'),
     ctrlWrapper(ctrl.uploadAvatar),
+);
+
+router.get('/verify/:verificationToken', ctrlWrapper(ctrl.verifyEmail));
+
+router.post(
+    '/verify',
+    validation(joiResendEmailSchema),
+    ctrlWrapper(ctrl.resendEmail),
 );
 
 module.exports = router;
