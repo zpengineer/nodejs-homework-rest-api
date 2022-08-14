@@ -9,7 +9,7 @@ const {SECRET} = process.env;
 const login = tryCatchWrapper(async ({email, password}) => {
   const user = await User.findOne({email});
 
-  if (!user || !user.validPassword(password)) {
+  if (!user || !user.verify || !user.validPassword(password)) {
     return null;
   }
   const payload = {

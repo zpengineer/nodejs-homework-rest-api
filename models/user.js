@@ -26,6 +26,14 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  verify: {
+    type: Boolean,
+    default: false,
+  },
+  verificationToken: {
+    type: String,
+    required: [true, 'Verify token is required'],
+  },
 }, {versionKey: false, timestamps: true});
 
 const joiRegisterSchema = Joi.object({
@@ -50,6 +58,12 @@ const joiLoginSchema = Joi.object({
       .required(),
 });
 
+const joiResendEmailSchema = Joi.object({
+  email: Joi.string()
+      .email({minDomainSegments: 2, tlds: {allow: ['com', 'net']}})
+      .required(),
+});
+
 userSchema.methods.setPassword = function(password) {
   const salt = bcrypt.genSaltSync(10);
   this.password = bcrypt.hashSync(password, salt);
@@ -65,4 +79,5 @@ module.exports = {
   User,
   joiRegisterSchema,
   joiLoginSchema,
+  joiResendEmailSchema,
 };
