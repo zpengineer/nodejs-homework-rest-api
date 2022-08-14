@@ -1,6 +1,6 @@
 const {auth: services} = require('../../services');
 
-const {sendEmail} = require('../../helpers');
+const {auth} = require('../../services');
 
 const signup = async (req, res, next) => {
   const {username, email, password} = req.body;
@@ -13,7 +13,7 @@ const signup = async (req, res, next) => {
     });
   }
 
-  await sendEmail(email, result.verificationToken);
+  await auth.sendEmail(email, result.verificationToken);
 
   res.status(201).json({
     user: {
